@@ -21,5 +21,5 @@ admin.site.site_title = "Basementline Admin Portal"
 admin.site.index_title = "Welcome to Basementline Admin Portal"
 
 urlpatterns = [
-  path('admin/', admin.site.urls),
+  path('api/admin/', admin.site.urls),
 ]
