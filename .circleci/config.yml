@@ -1,0 +1,46 @@
+aliases:
+  - &fix-permissions
+    name: Fix permissions
+    command: |
+      sudo chown -R circleci:circleci /usr/local/bin
+      sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+  - &install-pip
+    name: Install PIP packages
+    command: |
+      sudo pip3 install pipenv
+      pipenv install -r requirements.txt --skip-lock
+  - &collect-static
+    name: Collect static
+    command: pipenv run "python3 manage.py collectstatic --noinput"
+
+defaults: &defaults
+  working_directory: ~/project
+  docker:
+    - image: circleci/python:3.6.4
+
+version: 2
+jobs:
+  deploy_to_dev:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: *fix-permissions
+      - run: *install-pip
+      - run: *collect-static
+      - add_ssh_keys:
+          fingerprints:
+            - "ed:3e:b2:ab:2d:aa:ab:5f:e8:f1:ef:cf:1d:56:c8:97"
+      - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
+      - run:
+          name: Upload release to dev
+          command: rsync -avce ssh --exclude 'db.sqlite3' ./ $DEPLOYMENT_USER@$IP:$DEPLOYMENT_PATH_API
+
+workflows:
+  version: 2
+  build_and_deploy_to_dev:
+    jobs:
+      - deploy_to_dev:
+          context: dev
+          filters:
+            branches:
+              only: development
