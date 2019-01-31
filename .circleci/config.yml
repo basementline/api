@@ -1,4 +1,8 @@
 aliases:
+  - &install-tools
+    name: Install tools
+    command: |
+      sudo apt-get install rsync -y
   - &fix-permissions
     name: Fix permissions
     command: |
@@ -24,6 +28,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run: *install-tools
       - run: *fix-permissions
       - run: *install-pip
       - run: *collect-static
