@@ -38,7 +38,7 @@ jobs:
       - run: echo $REMOTE_HOSTKEY >> ~/.ssh/known_hosts
       - run:
           name: Upload release to dev
-          command: rsync -avce ssh --exclude 'db.sqlite3' ./ $DEPLOYMENT_USER@$IP:$DEPLOYMENT_PATH_API
+          command: rsync -avce ssh --exclude 'db.sqlite3' --exclude 'Pipfile' --exclude '.git/' --exclude '.circleci/' ./ $DEPLOYMENT_USER@$IP:$DEPLOYMENT_PATH_API
 
 workflows:
   version: 2
