@@ -40,7 +40,7 @@ jobs:
           name: Upload release to dev
           command: rsync -avce ssh --exclude 'db.sqlite3' --exclude 'Pipfile' --exclude '.git/' --exclude '.circleci/' ./ $DEPLOYMENT_USER@$IP:$DEPLOYMENT_PATH_API
       - run:
-          name: Install requirements
+          name: Setup API proccess
           command: ssh $DEPLOYMENT_USER@$IP './setup_api.sh'
 
 workflows:
