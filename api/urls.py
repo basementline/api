@@ -14,12 +14,13 @@ Including another URLconf
   2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-admin.site.site_header = "Basementline Admin Portal"
-admin.site.site_title = "Basementline Admin Portal"
-admin.site.index_title = "Welcome to Basementline Admin Portal"
+admin.site.site_header 	= "Basementline Admin Portal"
+admin.site.site_title 	= "Basementline Admin Portal"
+admin.site.index_title 	= "Welcome to Basementline Admin Portal"
 
 urlpatterns = [
   path('api/admin/', admin.site.urls),
+  path('api/events/', include('events.urls')),
 ]
